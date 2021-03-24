@@ -1,0 +1,8 @@
+*
+!*.cpp
+!*.h
+!README.md
+!.gitignore
+!renderings/
+stb_image.h
+stb_image_write.h
