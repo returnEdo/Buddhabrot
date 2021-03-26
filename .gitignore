@@ -1,6 +1,7 @@
 *
 !*.cpp
 !*.h
+!*.jpg
 !README.md
 !.gitignore
 !renderings/
