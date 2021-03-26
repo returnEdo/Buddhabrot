@@ -1,4 +1,5 @@
 #include "Mandelbrot.h"
+#include "Buddhabrot.h"
 #include "MandelbrotMath.h"
 #include "Palette.h"
 #include "JPGTools.h"
@@ -7,43 +8,49 @@
 #include <string>
 #include <iostream>
 #include <cmath>
+#include <cassert>
 
-void MandelbrotSet(Complex& zn, Complex& c){
+const unsigned int K = 5;
 
-	zn = pow(zn, 2.0) + c;
-}
+/* width height iter_red iter_green iter_blue */
 
 
-void BurningShipSet(Complex& zn, Complex& c){
-
-	Complex zz(abs(zn.a), abs(zn.b));
-
-	zn = pow(zz, 2) + c;
-}
-
-int main(){
+int main(int argc, char** argv){
 	
-	std::vector<Vector> clrs = {Vector(20.0f), Vector(220.0f)};
+	assert(argc == (K + 1));
+		
+	int width =  atoi(argv[1]);
+	int height = atoi(argv[2]);
+	int iter_r = atoi(argv[3]);
+	int iter_g = atoi(argv[4]);
+	int iter_b = atoi(argv[5]);
 
-	Palette palette(clrs);
-	
-	std::string addr = "renderings/mbrt.jpg";
 
-	int width = 1920;
-	int height = 1080;
-	
-	double deltax = .00005;
+	std::vector<unsigned int> passBuffer;
 
-	Mandelbrot mandelbrot(width, height, deltax);
-	mandelbrot.setIterations(1000);
+	std::string addr = "renderings/buddha.jpg";
+	std::string addr_r = "renderings/temp/buddha_r.jpg";
+	std::string addr_g = "renderings/temp/buddha_g.jpg";
+	std::string addr_b = "renderings/temp/buddha_b.jpg";
 
-	std::vector<Vector> colors;
-	Complex center(-1.7686, .0008976);
-	Complex z0;
+	double deltax = 0.5;
+	Complex center(-1.2, .0);
 
-	mandelbrot.render(center, z0, MandelbrotSet, palette, colors);
+	Buddhabrot buddhabrot(width, height, deltax);
 
-	saveJpg(addr, width, height, colors);
+	buddhabrot.setIterations(iter_r);
+	buddhabrot.render(center, passBuffer);
+	buddhabrot.saveJPG(addr_r, passBuffer);
+
+	buddhabrot.setIterations(iter_g);
+	buddhabrot.render(center, passBuffer);
+	buddhabrot.saveJPG(addr_g, passBuffer);
+
+	buddhabrot.setIterations(iter_b);
+	buddhabrot.render(center, passBuffer);
+	buddhabrot.saveJPG(addr_b, passBuffer);
+
+	combine(addr, addr_r, addr_g, addr_b);
 
 	return 0;
 }

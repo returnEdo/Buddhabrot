@@ -10,3 +10,5 @@ bool comparef(double a, double b);
 
 Vector lerp(float t, const Vector& a, const Vector& b);
 Vector lerp(double t, const Vector& a, const Vector& b);
+
+double rand_d(double a, double b);

@@ -1,5 +1,6 @@
 #include "MathMisc.h"
 
+#include <cstdlib>
 
 bool comparef(double a, double b){
 
@@ -17,3 +18,10 @@ Vector lerp(double t, const Vector& a, const Vector& b){
 
 	return lerp((float)(t), a, b);
 }
+
+
+double rand_d(double a, double b){
+
+	return (static_cast<double>(rand()) / static_cast<double>(RAND_MAX) * (b - a) + a);
+}
+
